@@ -5,7 +5,7 @@ import librosa
 import numpy as np
 from numpy.typing import NDArray
 
-from src.utils import normalize, normalize_percentile
+from .utils import normalize, normalize_percentile
 
 AUDIO_EXTENSIONS = {".mp3", ".wav", ".flac", ".ogg"}
 

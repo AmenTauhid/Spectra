@@ -1,8 +1,8 @@
 import numpy as np
 
-from src.styles.base import StyleRenderer
-from src.palettes import sample_colors
-from src.utils import resample_to_length, resample_2d_time_axis, polar_to_cartesian
+from .base import StyleRenderer
+from ..palettes import sample_colors
+from ..utils import resample_to_length, resample_2d_time_axis, polar_to_cartesian
 
 
 class ParticleGalaxyRenderer(StyleRenderer):

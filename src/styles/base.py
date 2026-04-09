@@ -4,8 +4,8 @@ import matplotlib.figure as mpl_figure
 import matplotlib.axes as mpl_axes
 import numpy as np
 
-from src.audio import AudioFeatures
-from src.palettes import Palette
+from ..audio import AudioFeatures
+from ..palettes import Palette
 
 
 class StyleRenderer(ABC):

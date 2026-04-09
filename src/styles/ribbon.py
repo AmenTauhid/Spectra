@@ -1,9 +1,9 @@
 import numpy as np
 from matplotlib.collections import PolyCollection, LineCollection
 
-from src.styles.base import StyleRenderer
-from src.palettes import sample_colors
-from src.utils import resample_to_length, smooth
+from .base import StyleRenderer
+from ..palettes import sample_colors
+from ..utils import resample_to_length, smooth
 
 
 class WaveformRibbonRenderer(StyleRenderer):

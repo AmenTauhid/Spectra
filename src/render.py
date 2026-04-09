@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 import matplotlib.figure as mpl_figure
 import numpy as np
 
-from src.audio import AudioFeatures
-from src.palettes import Palette
-from src.styles.base import StyleRenderer
-from src.styles.radial import RadialBurstRenderer
-from src.styles.terrain import TerrainFlowRenderer
-from src.styles.galaxy import ParticleGalaxyRenderer
-from src.styles.mosaic import GeometricMosaicRenderer
-from src.styles.ribbon import WaveformRibbonRenderer
+from .audio import AudioFeatures
+from .palettes import Palette
+from .styles.base import StyleRenderer
+from .styles.radial import RadialBurstRenderer
+from .styles.terrain import TerrainFlowRenderer
+from .styles.galaxy import ParticleGalaxyRenderer
+from .styles.mosaic import GeometricMosaicRenderer
+from .styles.ribbon import WaveformRibbonRenderer
 
 
 STYLE_MAP: dict[str, type[StyleRenderer]] = {

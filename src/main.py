@@ -1,13 +1,14 @@
 import click
 from pathlib import Path
 
-from src.audio import extract_features, load_audio_paths
-from src.palettes import get_palette
-from src.render import render_artwork, get_style_names
+from .audio import extract_features, load_audio_paths
+from .palettes import get_palette
+from .render import render_artwork, get_style_names
+from .youtube import is_youtube_url, download_audio
 
 
 @click.command()
-@click.argument("input_path", type=click.Path(exists=True))
+@click.argument("input_path", type=str)
 @click.option("--style", "-s",
               type=click.Choice(["radial", "terrain", "galaxy", "mosaic", "ribbon", "random"],
                                 case_sensitive=False),
@@ -29,11 +30,19 @@ from src.render import render_artwork, get_style_names
 def main(input_path, style, palette, output, size, bg, seed, preview):
     """Spectra: Generate abstract art from audio files.
 
-    INPUT_PATH can be an audio file (.mp3, .wav, .flac, .ogg) or a directory
-    for batch processing.
+    INPUT_PATH can be an audio file (.mp3, .wav, .flac, .ogg), a directory
+    for batch processing, or a YouTube URL.
     """
-    input_p = Path(input_path)
-    audio_files = load_audio_paths(input_p)
+    if is_youtube_url(input_path):
+        click.echo(f"Downloading audio from YouTube...")
+        mp3_path = download_audio(input_path)
+        click.echo(f"  Downloaded: {mp3_path.name}")
+        audio_files = [mp3_path]
+    else:
+        input_p = Path(input_path)
+        if not input_p.exists():
+            raise click.BadParameter(f"Path does not exist: {input_path}", param_hint="INPUT_PATH")
+        audio_files = load_audio_paths(input_p)
     click.echo(f"Found {len(audio_files)} audio file(s).")
 
     bg_color = "#000000" if bg == "black" else "#FAFAFA"
@@ -83,7 +92,3 @@ def _resolve_output_path(output, audio_file, style, index, total):
         return out_p.parent / f"{stem}_{index+1:03d}{suffix}"
 
     return out_p
-
-
-if __name__ == "__main__":
-    main()

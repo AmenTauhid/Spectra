@@ -33,35 +33,41 @@ Requires Python 3.10+.
 
 ```bash
 # Single file with specific style and palette
-python src/main.py song.mp3 --style radial --palette neon --output art.png
+python spectra.py song.mp3 --style radial --palette neon --output art.png
 
 # Auto palette derived from the music
-python src/main.py song.wav --style terrain --palette auto --output art.png
+python spectra.py song.wav --style terrain --palette auto --output art.png
 
 # Random style, 6000px output
-python src/main.py song.flac --style random --palette ocean --output art.png --size 6000
+python spectra.py song.flac --style random --palette ocean --output art.png --size 6000
 
 # SVG vector output for print
-python src/main.py song.mp3 --style galaxy --palette sunset --output art.svg
+python spectra.py song.mp3 --style galaxy --palette sunset --output art.svg
 
 # Batch process a folder
-python src/main.py album_folder/ --style mosaic --palette neon --output posters/
+python spectra.py album_folder/ --style mosaic --palette neon --output posters/
 
 # Fast 800px preview
-python src/main.py song.mp3 --style ribbon --preview
+python spectra.py song.mp3 --style ribbon --preview
 
 # White background
-python src/main.py song.mp3 --style mosaic --palette pastel --bg white --output art.png
+python spectra.py song.mp3 --style mosaic --palette pastel --bg white --output art.png
 
 # Reproducible output with seed
-python src/main.py song.mp3 --style galaxy --seed 42 --output art.png
+python spectra.py song.mp3 --style galaxy --seed 42 --output art.png
+
+# YouTube URL - downloads audio automatically
+python spectra.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --style radial --palette neon --output art.png
+
+# YouTube Music link works too
+python spectra.py "https://music.youtube.com/watch?v=dQw4w9WgXcQ" --style galaxy --output art.png
 ```
 
 ## CLI Options
 
 | Option | Values | Default | Description |
 |--------|--------|---------|-------------|
-| `input_path` | file or directory | required | Audio file (.mp3, .wav, .flac, .ogg) or folder for batch |
+| `input_path` | file, directory, or YouTube URL | required | Audio file, folder for batch, or YouTube URL |
 | `--style, -s` | radial, terrain, galaxy, mosaic, ribbon, random | radial | Art style |
 | `--palette, -p` | sunset, ocean, neon, monochrome, pastel, auto | auto | Color palette |
 | `--output, -o` | file path | `<input>_<style>.png` | Output path (.png or .svg) |
@@ -69,6 +75,15 @@ python src/main.py song.mp3 --style galaxy --seed 42 --output art.png
 | `--bg` | black, white | black | Background color |
 | `--seed` | integer | none | Random seed for reproducibility |
 | `--preview` | flag | off | Render at 800px instead of full size |
+
+## YouTube Support
+
+Pass a YouTube URL directly as the input and Spectra will download the audio as MP3 using [yt-dlp](https://github.com/yt-dlp/yt-dlp) before processing. Requires ffmpeg installed on your system.
+
+Supported URL formats:
+- `https://www.youtube.com/watch?v=...`
+- `https://youtu.be/...`
+- `https://music.youtube.com/watch?v=...`
 
 ## How It Works
 
@@ -84,6 +99,7 @@ python src/main.py song.mp3 --style galaxy --seed 42 --output art.png
 
 ```
 src/main.py            - CLI entry point
+src/youtube.py         - YouTube audio downloading via yt-dlp
 src/audio.py           - Audio loading and feature extraction
 src/palettes.py        - Color palette definitions
 src/styles/base.py     - Abstract renderer base class
@@ -104,3 +120,4 @@ tests/                 - Test suite (runs with synthetic audio)
 - numpy - array math
 - matplotlib - rendering
 - click - CLI framework
+- yt-dlp - YouTube audio downloading

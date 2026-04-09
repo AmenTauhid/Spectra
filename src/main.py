@@ -1,3 +1,5 @@
+import shutil
+
 import click
 from pathlib import Path
 
@@ -33,9 +35,11 @@ def main(input_path, style, palette, output, size, bg, seed, preview):
     INPUT_PATH can be an audio file (.mp3, .wav, .flac, .ogg), a directory
     for batch processing, or a YouTube URL.
     """
+    temp_dir = None
     if is_youtube_url(input_path):
         click.echo(f"Downloading audio from YouTube...")
         mp3_path = download_audio(input_path)
+        temp_dir = mp3_path.parent
         click.echo(f"  Downloaded: {mp3_path.name}")
         audio_files = [mp3_path]
     else:
@@ -65,6 +69,9 @@ def main(input_path, style, palette, output, size, bg, seed, preview):
         click.echo(f"  Rendering style '{style}' at {render_size}x{render_size}...")
         result = render_artwork(features, style, pal, out_path, render_size, bg_color, seed)
         click.echo(f"  Saved: {result}")
+
+    if temp_dir and temp_dir.exists():
+        shutil.rmtree(temp_dir)
 
     click.echo("\nDone.")
 
